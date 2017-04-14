@@ -1,0 +1,280 @@
+ \documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{cite}
+\usepackage{xspace}
+\usepackage{nicefrac}
+\usepackage{bbm}
+\usepackage{float}
+\usepackage{threeparttable}
+\usepackage{indentfirst}
+
+%
+% Basic Document Settings
+%
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+
+
+\pagestyle{fancy}
+\lhead{\docClass}
+% \chead{}
+\rhead{\docTitle}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+
+
+%
+% Create Definition, Claim, Proposition, Remark, etc. headings
+%
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem*{thm*}{Theorem} 
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{prop*}{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem*{lem*}{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem*{claim*}{Claim}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem*{cor*}{Corollary}
+
+\theoremstyle{definition}	
+\newtheorem{exmp}[thm]{Example}
+\newtheorem*{exmp*}{Example}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem*{defn*}{Definition}
+\newtheorem{conj}[thm]{Conjecture} 
+\newtheorem*{conj*}{Conjecture}
+\newtheorem{excs}[thm]{Exercise}
+\newtheorem*{excs*}{Exercise}
+\newtheorem{prb}[thm]{Problem}
+\newtheorem*{prb*}{Problem}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem*{rem*}{Remark}
+
+\setcounter{section}{0}
+\newcounter{Prb}
+\setcounter{Prb}{0}
+\newenvironment{Prb}{ \stepcounter{section} \stepcounter{Prb} \section*{\normalsize{Problem \arabic{Prb}}}
+	\setcounter{equation}{0}
+}{}
+
+\newenvironment{sol}{\begin{proof}[Solution] \setcounter{equation}{0} \let\qed\relax
+	}{\end{proof}}
+
+\newcommand{\solution}{ \small  \textbf{Solution}
+	\medskip}
+
+
+% Document Details
+%   - Title
+%   - Class
+%   - Author
+%
+
+\newcommand{\docTitle}{\small }
+\newcommand{\docClass}{\small }
+\newcommand{\docAuthorName}{\small Robertson Wang}
+\newcommand{\docGroupMembers}{}
+
+%
+% Title Page
+%
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\docClass}\\
+		\vspace{0.35in}	
+		\textmd{\docTitle}}\\
+	\vspace{3in}
+}
+
+\author{\textbf{\docAuthorName}}
+\date{}
+
+
+
+%
+% Various Helper Commands
+%
+
+
+% For derivatives
+\newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\derivtwo}[2]{\frac{\mathrm{d}^2 #1}{\mathrm{d}#2^2}}
+\newcommand{\D}{\mathrm{D}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Integral dx etc
+\newcommand{\dx}{\,\mathrm{d}x}
+\newcommand{\dy}{\,\mathrm{d}y}
+\newcommand{\dz}{\,\mathrm{d}z}
+\newcommand{\dt}{\,\mathrm{d}t}
+\newcommand{\du}{\,\mathrm{d}u}
+\newcommand{\dalpha}{\,\mathrm{d}\alpha}
+
+\newcommand{\sumoneton}{\sum_{i=1}^{n}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\SD}{\mathrm{SD}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Corr}{\mathrm{Corr}}
+\newcommand{\Bias}{\mathrm{Bias}}
+\newcommand{\MSE}{\mathrm{MSE}}
+\newcommand{\Normal}[2]{\mathrm{n}(#1,#2)}
+\newcommand{\StdNormal}{\mathrm{n}(0,1)}
+\newcommand{\ChiSq}[1]{\chi^2(#1)}
+\newcommand{\tdist}[1]{t_{#1}}
+\newcommand{\salg}{\mathcal{B}}
+\newcommand{\MLE}[1]{\hat{#1}^{\mathrm{MLE}}}
+\newcommand{\MM}[1]{\hat{#1}^{\mathrm{MM}}}
+\newcommand{\OLS}[1]{\hat{#1}^{\mathrm{OLS}}}
+\newcommand{\SSR}{\mathrm{SSR}}
+\newcommand{\SE}{\mathrm{SE}}
+\DeclareMathOperator*{\plim}{plim}
+
+% Reals, Naturals, Integers, Rationals
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Span, rank
+\newcommand{\Span}{\operatorname{Span}}
+\newcommand{\rank}{\operatorname{rank}}
+
+% Real part and Imaginary part
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+% Vectors
+
+\renewcommand{\vec}[1]{\bm{#1}}
+
+%Int, Ext, Bdy, cl, etc.
+
+\newcommand{\bdy}{\partial}
+\newcommand{\intr}{\operatorname{int}}
+\newcommand{\extr}{\operatorname{ext}}
+\newcommand{\cl}{\operatorname{cl}}
+
+%Equation numbering reset
+
+\newcommand{\eqnrst}{\setcounter{equation}{0}}
+
+% Enumerate code for bolded: a), b), c)... : [label=\textbf{\emph{\alph*})}] %
+
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\b}{\beta_1}
+\newcommand{\bb}{\beta_2}
+\setlength{\parindent}{10ex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\section{Bayesian Average}
+
+Consider a categorical random variable $X$ with $X \ in \{ 1, 2, 3 \}$. Let $X_{1} = 1, X_{2} = 2, X_{3} = 3$. Further, let $O$ represent a sequence of independent observations such that
+\begin{equation*}
+O = (o_{1}, \dots, o_{N})
+\end{equation*}
+Let $K_{1}, K_{2}, K_{3}$ represent the number of observations for each of the categories enumerate above. Finally, let $p_{1}, p_{2}, p_{3}$ represent the probability of observing the categorical random variable for each of the above values, respectively. Then our Bayesian relationship is given by:
+
+\begin{equation*}
+P(p_{1}, p_{2}, p_{3}|O) \propto  P(O|p_{1}, p_{2}, p_{3})P(p_{1}, p_{2}, p_{3})
+\end{equation*}
+
+\noindent Assume the prior probability follows a distribution such that:
+
+\begin{equation*}
+ P(O|p_{1}, p_{2}, p_{3}) = p_{1}^{K_{1}}p_{2}^{K_{2}}p_{3}^{K_{3}} 
+\end{equation*}
+
+\noindent Assume that the posterior probability also follows a Dirichlet distribution (i.e. the probabilities of each categorical variable are drawn from a Dirichlet distribution) such that:
+
+\begin{equation*}
+P(p_{1}, p_{2}, p_{3}|O) = P(O|p_{1}, p_{2}, p_{3})P(p_{1}, p_{2}, p_{3}|\boldsymbol \alpha) \propto p_{1}^{K_{1}+\alpha_{1}^{0} - 1}p_{2}^{K_{2} +\alpha_{1}^{0} - 1}p_{3}^{K_{3} +\alpha_{1}^{0} - 1} 
+\end{equation*}
+
+\noindent This distribution is parametrized by the following vector:
+
+\begin{equation*}
+\boldsymbol \gamma = [K_{1}+\alpha_{1}^{0} \: K_{2} +\alpha_{2}^{0} \: K_{3} +\alpha_{3}^{0}]'
+\end{equation*}
+Recall that the pdf and first moment for the Dirichlet distribution are given by:
+
+\begin{align*}
+\frac{1}{B(\vec{\gamma})} \prod_{i=1}^{3} p_{i}^{\alpha_{i} - 1}
+\\
+E[p_{i}] = \frac{\alpha_{i}}{\sum_{j=1}^{3} \alpha_{j}}
+\end{align*}
+
+\noindent We have that the expected value of the categorical variable, conditioned on the observations is given by:
+\begin{equation}
+E[p_{1} + 2*p_{2} + 3*p_{3}|O] = \sum_{i=1}^{3} i * E[p_{i} | O]
+\end{equation}
+\noindent Under the Dirichlet distribution, the probability of each category conditioned on the observations is given by the first moment above, conditioned on the observations is given by:
+\begin{equation}
+E[p_{i}|O] = \frac{\vec{\gamma_{i}}}{\sum_{j=1}^{3}\boldsymbol \gamma_{j}}
+\end{equation}
+Plugging (2) into (1) we have:
+\begin{equation}
+E[p_{1} + 2*p_{2} + 3*p_{3}|O] = \frac{\psi + \sum_{i=1}^{3} iK_{i}}{N + \sum_{j=1}^{3}\alpha_{j}^{0}}
+\end{equation}
+Where $\psi = \sum_{i=1}^{3}i\alpha_{i}^{0}$ and $N = \sum_{i=1}^{3}K_{j}$
+
+Therefore, we can express (3) as:
+\begin{equation}
+\frac{\psi + \text{Sum of Categorical Variable}}{\text{Sum of Posterior Dirichlet Concentration Parameters} + \text{Total Number of Observations}}
+\end{equation}
+Note, we have that $\psi = \sum_{i=1}^{3}i\alpha_{i}^{0}$ which is simply the dot product of a vector containing all the possible category values and a vector containing all the concentration parameters of the Dirichilet distribution for $P(p_{1}, p_{2}, p_{3}|\boldsymbol \alpha)$. This has an intuitive interpretation. The concentration parameters determines the location of the simplex on which the true distribution lies. A sparse, or small concentration parameter, implies a distribution with most of its mass concentrated on a few categories. A uniform parameter, such that $\alpha_{1}^{0} = \alpha_{2}^{0}= \alpha_{3}^{0}$ implies a perfectly symmetric Dirichlet distribution. This is graphically illustrated below (taken from http://www.bascornelissen.nl/2017/01/01/bags.html):
+\begin{figure}[H]
+	\centering
+    \caption{Right is Sparse, Left is Uniform}
+	\includegraphics[width=0.8 \textwidth]{dirichlet_concentration}
+\end{figure}
+
+https://folk.uio.no/josang/papers/JH2007-ARES.pdf
+http://www.evanmiller.org/ranking-items-with-star-ratings.html
+
+where does C and M come from?
+\end{document}
+%They first find the total emerging risks for bank i
+\begin{equation}
+
+\end{equation}
