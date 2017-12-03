@@ -73,6 +73,29 @@ div.paper pre {
 <div class="section">
 <div class="paper">
 
+<a href='\make_summary.html'>Example single doc summarization using AIG's 2009 Earning Announcement</a> 
+<br>
+<br>
+<a href='\sumr.html'>Back-end code for creating single doc summaries using TextRank, Naive BOW methods, and LSI</a> 
+
+<br>
+<p>
+&nbsp &nbsp &nbsp I used a corpus of earnings announcements sourced from the websites of the 12 LISCC member banks. The entire 
+list of liscc institutions can be found <a href='https://www.federalreserve.gov/supervisionreg/large-institution-supervision.htm'> here </a>.
+For each of these banks, I attempt to automatically generate a short summarization of their quarterly earnings announcements. The finance literature 
+has shown that the textual information embedded in firm earnings announcements are indicative of firm stock returns, volatility, and earnings. I try three main approaches: 
+1. Naive BOW methods - This method, in general, involves weighting sentences within a document based on some underlying bag of word measure and returning sentences in chronological order. BOW measures I used include keywords based on tf-idf ranking, summation based selection, and density-based selection.
+2. TextRank - This method follows the algorithm put forth in <a href='https://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf'> Mihalcea and Tarau, 2004</a>. 
+3. Latent Semantic Indexing - This method follows the algorithm put forth in <a href='http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.5097&rep=rep1&type=pdf'> Gong and Liu, 2001</a>. 
+</p>
+</div>
+</div>
+</div>
+
+<div style="clear: both;">
+<div class="section">
+<div class="paper">
+
 <a href='\model_overview.html'>Recommendation model overview and a short explanation of the features/ML models used </a> 
 <br>
 <br>
