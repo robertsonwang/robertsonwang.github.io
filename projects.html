@@ -80,10 +80,8 @@ div.paper pre {
 
 <br>
 <p>
-&nbsp &nbsp &nbsp I used a corpus of earnings announcements sourced from the websites of the 12 LISCC member banks. The entire 
-list of liscc institutions can be found <a href='https://www.federalreserve.gov/supervisionreg/large-institution-supervision.htm'> here </a>.
-For each of these banks, I attempt to automatically generate a short summarization of their quarterly earnings announcements. The finance literature 
-has shown that the textual information embedded in firm earnings announcements are indicative of firm stock returns, volatility, and earnings. I try three main approaches: 
+&nbsp &nbsp &nbsp I used a corpus of earnings announcements sourced from the websites of large financial institutions.
+For each of these institutions, I attempt to automatically generate a short summarization of their quarterly earnings announcements. The academic financial literature has shown that the textual information embedded in firm earnings announcements statistically significantly explains firm stock returns, volatility, and earnings. I try three main approaches to generate summarizations: 
 <ul>
   <li>Naive Bag of Word methods - This method, in general, involves weighting sentences within a document based on some underlying bag of word measure and returning sentences in chronological order. BOW measures I used include keywords based on tf-idf ranking, summation based selection, and density-based selection.</li>
   <li>TextRank - This method follows the algorithm put forth in <a href='https://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf'> Mihalcea and Tarau, 2004</a>.</li>
