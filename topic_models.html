@@ -11916,17 +11916,17 @@ $</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 
 <span class="n">video</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;topic_model_scheme.webm&#39;</span><span class="p">,</span> <span class="s1">&#39;r+b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="n">encoded</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">video</span><span class="p">)</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;&lt;video alt=&quot;test&quot; controls&gt;</span>
-<span class="s1">                &lt;source src=&quot;data:video/mp4;base64,{0}&quot; type=&quot;video/mp4&quot; /&gt;</span>
+<span class="s1">                &lt;source src=&quot;data:video/mp4;base64,</span><span class="si">{0}</span><span class="s1">&quot; type=&quot;video/mp4&quot; /&gt;</span>
 <span class="s1">             &lt;/video&gt;&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">encoded</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)))</span>
 </pre></div>
 
@@ -11938,7 +11938,7 @@ $</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <video alt="test" controls>
@@ -11960,132 +11960,6 @@ $</p>
 <p>Selecting $k$ largest singular values (the square root of the elements of $E'E$) and their corresponding eigenvectors in $V$ and $U$ leads to the rank $k$ approximation of $X$.</p>
 <p>We refer to $k$ as the number of topics. The term eigenvector that each $k$ eigenvalue is associated with is the particular mix of terms that make up each topic.</p>
 <p>Click <a href="https://nlp.stanford.edu/IR-book/html/htmledition/term-document-matrices-and-singular-value-decompositions-1.html">here</a> for more information</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Hanley-and-Hoberg-(2016)">Hanley and Hoberg (2016)<a class="anchor-link" href="#Hanley-and-Hoberg-(2016)">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ol>
-<li>The authors first identify all sections within each 10-K that contain the root word "risk".</li>
-<li>After collecting these sections across all 10-K filings, the authors generate 25 word topics using LDA.</li>
-<li>The authors then manually review the 25 word topics for each year, and choose 18 themes to represent the LDA topics across all years.</li>
-<li>Finally, they use a word2vec (Semantic Vector Analysis) model to assign a vector of 100 words and phrases that are most correlated with each of the 18 themes.</li>
-<li>They refer to each of these word vectors as "risk themes"</li>
-</ol>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The result of the two-pass process is a summary statistic of a firm's exposure to a given risk theme defined by the cosine distance between the words in a firm's 10-K and the vocabulary of a given risk theme. That is, firm i's exposure to risk theme k at time t is given by:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$S_{i, k, t} = \frac{W_{i,t}}{||W_{i,t}||} \cdot \frac{T_{k,t}}{||T_{k,t}||}$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Where:</p>
-<ul>
-<li>$T_{k,t}$ is the bag of words associated with risk theme k at year t  </li>
-<li>$W_{i,t}$ is the bag of words for firm i over the vocabulary defined over all risk themes for year t</li>
-</ul>
-<p>The main idea is that two banks jointly exposed to a particular risk theme should move together. If systemic risk is growing in the banking industry, a regression of pairwise covariance on the 18 semantic risk themes will be highly significant.</p>
-<p>The authors capture the joint exposure of any two banks to each of the 18 semantic risk themes by taking the product of the each firm's exposure to each semantic risk theme. $S_{i,j,k, t}$ is the joint exposure of firm $i$ and firm $j$ to risk theme $k$ at time $t$.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$S_{i,j, k, t} = S_{i, k, t} * S_{j, k, t} = \frac{W_{i,t}}{||W_{i,t}||} \cdot \frac{T_{k,t}}{||T_{k,t}||} * \frac{W_{j,t}}{||W_{j,t}||} \cdot \frac{T_{k,t}}{||T_{k,t}||}$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>After calculating the above variable for each of the 18 semantic themes, the authors run the following regression twice (once including the 18 semantic themes and once without):</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$Cov_{i,j,t} = \alpha + \sum_{z=1}^{18}\beta_{z}S_{i,j,t-1,z} + \boldsymbol{\gamma} \boldsymbol{X_{i,j,t-1}} + \epsilon_{i,j,t}$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Where:</p>
-<ul>
-<li>$Cov_{i,j,t}$ is covariance of stock returns of banks $i$ and $j$ at time $t$</li>
-<li>$\boldsymbol{X_{i,j,t-1}}$ is a vector of controls</li>
-<li>$\sum_{z=1}^{18}\beta_{z}S_{i,j,t-1,z}$ are the 18 semantic risk themes</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The authors then construct their systemic risk measure using the difference between the $R^{2}$ from the two regressions.</p>
-<p>Specifically, let:</p>
-<p>$\text{Raw Risk}_{t} = R^{2}_{Risk Themes} - R^{2}_{ex. Risk Themes}$</p>
-<p>$\text{Risk Measure}_{t} = \frac{\text{Raw Risk}_{t} - \mu(\text{Raw Risk})}{\sigma(\text{Raw Risk} )}$</p>
-<p>Where $\mu(\text{Raw Risk})$ and $\sigma(\text{Raw Risk})$ are calculated using the calibration period from 1998 to 2003.</p>
-<p>The authors note that $\text{Risk Measure}_{t}$:</p>
-<ul>
-<li>Becomes elevated in 2005-Q2 and peaks in 2006-Q4</li>
-<li>The measure does not increase during periods of market volatility that are not systemic</li>
-<li>Does not become elevated during tech bubble of 2000 and 9/11</li>
-</ul>
 
 </div>
 </div>
