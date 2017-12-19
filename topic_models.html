@@ -11751,7 +11751,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Latent-Dirichlet-Allocation-(LDA)">Latent Dirichlet Allocation (LDA)<a class="anchor-link" href="#Latent-Dirichlet-Allocation-(LDA)">&#182;</a></h1><p>LDA models each document as a mixture over topics. Each topic is a distribution over a selection of words and each word within the corpus of docuemnts is assumed to be from a particular distribution of words. The algorithm takes the number of topics, $k$, as a parameter. Each $k$ is calle a <em>latent topic</em>. LDA produces the support for each topic distribution via Bayesian updating. In general LDA:</p>
+<h1 id="Latent-Dirichlet-Allocation-(LDA)">Latent Dirichlet Allocation (LDA)<a class="anchor-link" href="#Latent-Dirichlet-Allocation-(LDA)">&#182;</a></h1><p>LDA models each document as a mixture over topics. Each topic is a distribution over a selection of words and each word within the corpus of docuemnts is assumed to be from a particular distribution of words. The algorithm takes the number of topics, $k$, as a parameter. Each $k$ is called a <em>latent topic</em>. LDA produces the support for each topic distribution via Bayesian updating. In general LDA:</p>
 <ul>
 <li>Starts with each document being represented as a bag of words. </li>
 <li>Produces the word distribution for each topic using approximating methods</li>
@@ -11814,6 +11814,7 @@ $</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Word2Vec">Word2Vec<a class="anchor-link" href="#Word2Vec">&#182;</a></h1><p>These are models first devloped by Mikolov et al (2013) which use the physical closeness of words to derive context. In general, these models use a 2-layer neural network to produce a vector space for a given corpus such that each vector in the space (one for each unique word) is "close" to other vectors that share similiar meaning.</p>
+<p>There are two main neural network structures for this idea: the continuous bag of words model and the skip-gram model. The continuous bag of words model predicts the current word given the surrounding words. The skip-gram model predicts the surrounding words given the current word.</p>
 
 </div>
 </div>
@@ -11823,7 +11824,10 @@ $</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="word2vec.png" alt="title"></p>
+<p><img src="cbow.png" alt="CBOW Neural Network Architecture"></p>
+<p>The above describes a continuous bag of word neural network model, the image is taken from <strong><a href="https://iksinc.wordpress.com/tag/continuous-bag-of-words-cbow/">this blog post</a></strong></p>
+<p><img src="skipgram.png" alt="CBOW Neural Network Architecture"></p>
+<p>The above describes a skip-gram neural network model, the image is taken from <strong><a href="http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/">this blog post</a></strong></p>
 
 </div>
 </div>
@@ -11833,9 +11837,8 @@ $</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The first layer of the neural network, the continuous bag of words model, predicts the current word given the surrounding words. The second layer of the network, the skip-gram model, predicts the surrounding words given the current word.</p>
-<p>The result is a vector for each word that contains the surrounding words most related in semantic meaning.</p>
-<p>The issue with this is two fold:</p>
+<p>The result from both of these models is a vector for each word that contains the surrounding words most related in semantic meaning. That is, it returns a vector of words that are most correlated with a given word. We can think of these vectors as "topics" in the sense that a vector for a given topic will contain words most related to that topic.</p>
+<p>Some issues with this is approach:</p>
 <ol>
 <li>Back-propagation in a two-layer neural network means that the results are a black box</li>
 <li>The model is highly sensitive to the corpus that it is trained on, meaning any changes to the data cleaning process will be reflected in the model results</li>
@@ -11851,7 +11854,6 @@ $</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For more information see the <a href="https://en.wikipedia.org/wiki/Word2vec">wikipedia link</a> and the <a href="https://arxiv.org/pdf/1301.3781.pdf">original paper</a></p>
-<p>Note: The original paper found that LSA had an accuracy rate of 49% while</p>
 
 </div>
 </div>
@@ -11962,6 +11964,128 @@ $</p>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Hanley-and-Hoberg-(2016)">Hanley and Hoberg (2016)<a class="anchor-link" href="#Hanley-and-Hoberg-(2016)">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ol>
+<li>The authors first identify all sections within each 10-K that contain the root word "risk".</li>
+<li>After collecting these sections across all 10-K filings, the authors generate 25 word topics using LDA.</li>
+<li>The authors then manually review the 25 word topics for each year, and choose 18 themes to represent the LDA topics across all years.</li>
+<li>Finally, they use a word2vec (Semantic Vector Analysis) model to assign a vector of 100 words and phrases that are most correlated with each of the 18 themes.</li>
+<li>They refer to each of these word vectors as "risk themes"</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The result of the two-pass process is a summary statistic of a firm's exposure to a given risk theme defined by the cosine distance between the words in a firm's 10-K and the vocabulary of a given risk theme. That is, firm i's exposure to risk theme k at time t is given by:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$S_{i, k, t} = \frac{W_{i,t}}{||W_{i,t}||} \cdot \frac{T_{k,t}}{||T_{k,t}||}$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Where:</p>
+<ul>
+<li>$T_{k,t}$ is the bag of words associated with risk theme k at year t  </li>
+<li>$W_{i,t}$ is the bag of words for firm i over the vocabulary defined over all risk themes for year t</li>
+</ul>
+<p>The main idea is that two banks jointly exposed to a particular risk theme should move together. If systemic risk is growing in the banking industry, a regression of pairwise covariance on the 18 semantic risk themes will be highly significant.</p>
+<p>The authors capture the joint exposure of any two banks to each of the 18 semantic risk themes by taking the product of the each firm's exposure to each semantic risk theme. $S_{i,j,k, t}$ is the joint exposure of firm $i$ and firm $j$ to risk theme $k$ at time $t$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$S_{i,j, k, t} = S_{i, k, t} * S_{j, k, t} = \frac{W_{i,t}}{||W_{i,t}||} \cdot \frac{T_{k,t}}{||T_{k,t}||} * \frac{W_{j,t}}{||W_{j,t}||} \cdot \frac{T_{k,t}}{||T_{k,t}||}$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After calculating the above variable for each of the 18 semantic themes, the authors run the following regression twice (once including the 18 semantic themes and once without):</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$Cov_{i,j,t} = \alpha + \sum_{z=1}^{18}\beta_{z}S_{i,j,t-1,z} + \boldsymbol{\gamma} \boldsymbol{X_{i,j,t-1}} + \epsilon_{i,j,t}$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Where:</p>
+<ul>
+<li>$Cov_{i,j,t}$ is covariance of stock returns of banks $i$ and $j$ at time $t$</li>
+<li>$\boldsymbol{X_{i,j,t-1}}$ is a vector of controls</li>
+<li>$\sum_{z=1}^{18}\beta_{z}S_{i,j,t-1,z}$ are the 18 semantic risk themes</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The authors then construct their systemic risk measure using the difference between the $R^{2}$ from the two regressions.</p>
+<p>Specifically, let:</p>
+<p>$\text{Raw Risk}_{t} = R^{2}_{Risk Themes} - R^{2}_{ex. Risk Themes}$</p>
+<p>$\text{Risk Measure}_{t} = \frac{\text{Raw Risk}_{t} - \mu(\text{Raw Risk})}{\sigma(\text{Raw Risk} )}$</p>
+<p>Where $\mu(\text{Raw Risk})$ and $\sigma(\text{Raw Risk})$ are calculated using the calibration period from 1998 to 2003.</p>
+<p>The authors note that $\text{Risk Measure}_{t}$:</p>
+<ul>
+<li>Becomes elevated in 2005-Q2 and peaks in 2006-Q4</li>
+<li>The measure does not increase during periods of market volatility that are not systemic</li>
+<li>Does not become elevated during tech bubble of 2000 and 9/11</li>
+</ul>
 
 </div>
 </div>
