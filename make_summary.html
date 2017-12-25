@@ -11748,15 +11748,16 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">sumr</span>
 <span class="nb">reload</span><span class="p">(</span><span class="n">sumr</span><span class="p">)</span>
-<span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;quarter_examples/&#39;</span>
+<span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;quarter_example/&#39;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 </pre></div>
 
 </div>
@@ -11769,20 +11770,35 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="AIG's-First-Quarter-2009-Earnings-Announcement">AIG's First Quarter 2009 Earnings Announcement<a class="anchor-link" href="#AIG's-First-Quarter-2009-Earnings-Announcement">&#182;</a></h3><p>As an example, we're going to create a single document summarization for AIG's 2009 first quarter earnings announcement. The full text of the announcement can be found <strong><a href="http://www.aig.com/content/dam/aig/america-canada/us/documents/investor-relations/1q09-press-release-report.pdf">here</a></strong>.</p>
+<p>As you can see, most of the pertinent information is concentrated in the first 10 pages of the document. Digging deeper, the main hightlights can be found in the first paragraph:</p>
+<blockquote> 
+American International Group, Inc. (AIG) today reported a net loss for the first quarter of 2009 of \$4.35 billion or \$1.98 per diluted share, compared to a net loss of \$7.81 billion or \$3.09 per diluted share in the first quarter of 2008. First quarter 2009 adjusted net loss, excluding net realized capital gains (losses) and FAS 133 gains (losses), net of tax, was \$1.60 billion, compared to an adjusted net loss of \$3.56 billion in the first quarter of 2008.
+</blockquote><p>These are the headline numbers that most analysts and investors pay attention to, specifically it contains the earnings figure and a comparision with the previous quarters earnings. For that reason each of the below algorithms are designed to return the first sentence of the first paragraph for each earnings announcement. However, I do not show this in the results. A separate function call naively returns this sentence for each document.</p>
+<p>The traditional measure for summarization quality is called <strong><a href="https://en.wikipedia.org/wiki/ROUGE_(metric">Recall-Oriented Understudy for Gisting Evaluatio (ROUGE)</a>)</strong> This metric basically looks at the overlap in orders (as defined by some N-Gram window) between the automatically generated summary and one that was created manually by a human.</p>
+<p>For simplicitys sake, I haven't generated a ROUGE score because we're only generating 6 key sentences for each of our documents. I start with the ideal summary and then move on to generating single document summaries using each of the three summarization algorithms.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Ideal-Summary-(Manually-created)">Ideal Summary (Manually created)<a class="anchor-link" href="#Ideal-Summary-(Manually-created)">&#182;</a></h3><p>American International Group, Inc. (AIG) today reported a net loss for the first quarter of 2009 of \$4.35 billion or \$1.98 per diluted share, compared to a net loss of \$7.81 billion or \$3.09 per diluted share in the first quarter of 2008.</p>
 <p>AIG reported a \$1.9 billion pre-tax (\$1.2 billion after tax) charge for restructuring costs, primarily related to the wind down of AIG Financial Products Corp., AIG Trading Group, Inc. and their subsidiaries (collectively, AIGFP) and other.</p>
 <p>AIG reported market disruption-related losses of \$2.5 billion pre-tax (\$1.6 billion after tax).</p>
 <p>The Federal Reserve Bank of New York (FRBNY) Credit Agreement was amended to remove the minimum 3.5 percent LIBOR floor as of April 17, 2009.</p>
 <p>The stabilization of rates is an improvement from the fourth quarter of 2008 and reflects the current market conditions.</p>
 <p>The foreign exchange effect for the first quarter of 2009 was a reduction of reserves of \$290 million.</p>
-<h3 id="Note:">Note:<a class="anchor-link" href="#Note:">&#182;</a></h3><p>The first line of the earnings announcement should always be included in the summary. The first line contains the headline earnings number as well as EPS and deltas with the previous quarter.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">doc_list</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
@@ -11795,11 +11811,11 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">CleanText</span> <span class="o">=</span> <span class="n">sumr</span><span class="o">.</span><span class="n">TextCleaner</span><span class="p">(</span><span class="n">doc_list</span><span class="p">)</span>
-<span class="n">CleanText</span><span class="o">.</span><span class="n">read_docs</span><span class="p">()</span>
+<span class="n">CleanText</span><span class="o">.</span><span class="n">read_docs</span><span class="p">(</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">base_path</span><span class="p">)</span>
 <span class="n">tf_idf</span> <span class="o">=</span> <span class="n">CleanText</span><span class="o">.</span><span class="n">make_tf_idf</span><span class="p">()</span>
 </pre></div>
 
@@ -11810,7 +11826,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">NaiveSum</span> <span class="o">=</span> <span class="n">sumr</span><span class="o">.</span><span class="n">NaiveSumr</span><span class="p">(</span><span class="n">CleanText</span><span class="p">)</span>
@@ -11840,10 +11856,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">NaiveSum</span><span class="o">.</span><span class="n">Summarize</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">NaiveSum</span><span class="o">.</span><span class="n">Summarize</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -11854,12 +11870,12 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[31]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[33]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[u&#39;AIG reported market disruption-related losses of $2.5 billion pre-tax ($1.6 billion after tax).&#39;,
- u&#39;The Federal Reserve Bank of New York (FRBNY) Credit Agreement was amended to remove the minimum 3.5 percent LIBOR floor as of April 17, 2009.&#39;,
+<pre>[u&#39;The Federal Reserve Bank of New York (FRBNY) Credit Agreement was amended to remove the minimum 3.5 percent LIBOR floor as of April 17, 2009.&#39;,
+ u&#39;The stabilization of rates is an improvement from the fourth quarter of 2008 and reflects the current market conditions.&#39;,
  u&#39;Foreign General net premiums written in the first quarter of 2009 were $3.6 billion, a 10.3 percent decline in original currency, or 18.1 percent including the effect of foreign exchange.&#39;,
  u&#39;The foreign exchange effect for the first quarter of 2009 was a reduction of reserves of $290 million.&#39;,
  u&#39;For the first quarter of 2009, net adverse loss development from prior accident years, excluding accretion of loss reserve discount, was $64 million.&#39;]</pre>
@@ -11887,11 +11903,11 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">TextRankSum</span> <span class="o">=</span> <span class="n">sumr</span><span class="o">.</span><span class="n">SumrGraph</span><span class="p">(</span><span class="n">CleanText</span><span class="p">)</span>
-<span class="n">TextRankSum</span><span class="o">.</span><span class="n">Summarize</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">TextRankSum</span><span class="o">.</span><span class="n">Summarize</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -11902,7 +11918,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[57]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[36]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -11946,13 +11962,13 @@ and $U$ contains the eigenvectors of $AA^T$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">lsasumr</span> <span class="o">=</span> <span class="n">sumr</span><span class="o">.</span><span class="n">LSASumr</span><span class="p">(</span><span class="n">CleanText</span><span class="p">)</span>
-<span class="n">lsasumr</span><span class="o">.</span><span class="n">make_term_sentence_matrix</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">lsasumr</span><span class="o">.</span><span class="n">make_term_sentence_matrix</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">lsasumr</span><span class="o">.</span><span class="n">get_singular_vector</span><span class="p">()</span>
-<span class="n">lsasumr</span><span class="o">.</span><span class="n">Summarize</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">lsasumr</span><span class="o">.</span><span class="n">Summarize</span><span class="p">(</span><span class="n">doc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -11963,15 +11979,15 @@ and $U$ contains the eigenvectors of $AA^T$.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[52]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[37]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
 <pre>[u&#39;First quarter 2009 adjusted net loss, excluding net realized capital gains (losses) and FAS 133 gains (losses), net of tax, was $1.60 billion, compared to an adjusted net loss of $3.56 billion in the first quarter of 2008.&#39;,
  u&#39;AIG reported market disruption-related losses of $2.5 billion pre-tax ($1.6 billion after tax).&#39;,
- u&#39;Dividends on the Series E Preferred Stock are payable on a non-cumulative basis.&#39;,
  u&#39;AIG Private Bank Ltd. (AIG Private Bank) to a subsidiary of Aabar Investments PJSC (Aabar), a global investment company based in Abu Dhabi, for approximately $253 million for the entire share capital of AIG Private Bank.&#39;,
- u&#39;Reserves were also reduced by $287 million due to dispositions.&#39;]</pre>
+ u&#39;Reserves were also reduced by $287 million due to dispositions.&#39;,
+ u&#39;These decreases were partially offset by higher DAC benefits related to net realized capital losses.&#39;]</pre>
 </div>
 
 </div>
